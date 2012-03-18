@@ -59,6 +59,12 @@ public class Pattern {
       return ret;
    }
 
+   public Pattern subImage(int x, int y, int w, int h){
+     Pattern ret = new Pattern(this);
+     ret.image = image.getSubimage(x, y, w, h);
+     return ret;
+   }
+
    public String toString(){
      String ret = "Pattern(\"" + imgURL + "\")";
      ret += ".similar(" + similarity +")";
