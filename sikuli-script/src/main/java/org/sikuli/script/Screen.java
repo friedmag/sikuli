@@ -7,6 +7,7 @@ package org.sikuli.script;
 
 import java.awt.*;
 import java.awt.image.*;
+import java.io.IOException;
 
 public class Screen extends Region implements Observer, IScreen {
    protected GraphicsDevice _curGD;
@@ -16,6 +17,8 @@ public class Screen extends Region implements Observer, IScreen {
    protected boolean _waitPrompt;
    protected CapturePrompt _prompt;
    protected ScreenHighlighter _overlay;
+
+   protected OSUtil util;
 
    static GraphicsDevice[] _gdev;
    static GraphicsEnvironment _genv;
@@ -103,6 +106,7 @@ public class Screen extends Region implements Observer, IScreen {
       init((int)bounds.getX(), (int)bounds.getY(),
            (int)bounds.getWidth(), (int)bounds.getHeight(), this);
       _overlay = new ScreenHighlighter(this);
+      util = Env.getOSUtil();
    }
 
    private void initGD(){
@@ -227,5 +231,70 @@ public class Screen extends Region implements Observer, IScreen {
                _curID, (int)r.getX(), (int)r.getY(), 
                (int)r.getWidth(), (int)r.getHeight(),
                _throwException?"Y":"N", _autoWaitTimeout);
+   }
+
+   class RepeatableFindWindow extends Repeatable
+   {
+     String name;
+     Window window = null;
+     public RepeatableFindWindow(String name) {
+       this.name = name;
+     }
+
+     public Window getWindow() {
+       return window;
+     }
+
+     @Override
+     public void run() throws IOException {
+       window = util.getWindow(name);
+     }
+
+     @Override
+     boolean ifSuccessful() {
+       return window != null;
+     }
+   }
+
+   public Window waitWindow(String name) throws FindFailed
+   {
+     return waitWindow(name, _autoWaitTimeout);
+   }
+
+   /**
+    *  Match waitWindow(String name, timeout-sec)
+    *  waits until target appears or timeout (in second) is passed
+    * 
+    * @param name Window name
+    * @param timeout Timeout in seconds
+    * @return All elements matching
+    * @throws FindFailed if the Find operation failed
+    */
+   public Window waitWindow(String name, double timeout) throws FindFailed
+   {
+     Window window;
+     while (true) {         
+       try {
+         Debug.log(2, "waiting for window '" + name + "' to appear");
+         RepeatableFindWindow rfw = new RepeatableFindWindow(name);
+         rfw.repeat(timeout);
+         window = rfw.getWindow();
+
+       } catch (Exception e) {
+         throw new FindFailed(e.getMessage());
+       }  
+
+       if (window != null) {
+         Debug.log(2, "" + name + " has appeared.");
+         break;
+       }
+
+       Debug.log(2, "" + name + " has not appeared.");
+
+       if (!handleFindFailed(name))
+         return null;
+     }
+
+     return window;
    }
 }

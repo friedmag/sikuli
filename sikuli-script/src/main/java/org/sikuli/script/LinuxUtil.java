@@ -16,7 +16,6 @@ public class LinuxUtil implements OSUtil {
     try{
       NativeLoader.loadLibrary("LinuxUtil");
       Debug.info("Linux utilities loaded.");
-      init();
     }
     catch(IOException e){
       e.printStackTrace();
@@ -85,19 +84,21 @@ public class LinuxUtil implements OSUtil {
   public Window getFocusedWindow(){
     return getX11FocusedWindow();
   }
-  public Region getWindow(String appName){
-    return getWindow(appName, 0);
+  public Window getWindowById(long id) {
+    return getX11Window(id);
+  }
+  public Window getWindow(String appName){
+    return getX11Window(appName); //getWindow(appName, 0);
   }
 
-  private Region findRegion(String appName, int winNum,SearchType type){
+  private Window findRegion(String appName, int winNum,SearchType type){
     String[] winLine = findWindow(appName,winNum,type);
     if(winLine.length>=7){
       int x = new Integer(winLine[3]);
       int y = Integer.parseInt(winLine[4]);
       int w = Integer.parseInt(winLine[5]);
       int h = Integer.parseInt(winLine[6]);
-      Region r = Region.create(x, y, w, h);
-      return r;
+      return new Window(appName, -1, x, y, w, h);
     }
     return null;
   }
@@ -178,7 +179,7 @@ public class LinuxUtil implements OSUtil {
     return found;
   }
 
-  public Region getWindow(String appName, int winNum){
+  public Window getWindow(String appName, int winNum){
     return findRegion(appName,winNum,SearchType.APP_NAME);
   }
 
@@ -231,5 +232,6 @@ public class LinuxUtil implements OSUtil {
   public void bringWindowToFront(java.awt.Window win, boolean ignoreMouse){}
 
   private static native Window getX11FocusedWindow();
-  private static native void init();
+  private static native Window getX11Window(String name);
+  private static native Window getX11Window(long id);
 } 

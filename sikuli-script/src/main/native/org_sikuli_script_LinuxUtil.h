@@ -17,11 +17,19 @@ JNIEXPORT jobject JNICALL Java_org_sikuli_script_LinuxUtil_getX11FocusedWindow
 
 /*
  * Class:     org_sikuli_script_LinuxUtil
- * Method:    init
- * Signature: ()V
+ * Method:    getX11Window
+ * Signature: (Ljava/lang/String;)Lorg/sikuli/script/Window;
  */
-JNIEXPORT void JNICALL Java_org_sikuli_script_LinuxUtil_init
-  (JNIEnv *, jclass);
+JNIEXPORT jobject JNICALL Java_org_sikuli_script_LinuxUtil_getX11Window__Ljava_lang_String_2
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_sikuli_script_LinuxUtil
+ * Method:    getX11Window
+ * Signature: (J)Lorg/sikuli/script/Window;
+ */
+JNIEXPORT jobject JNICALL Java_org_sikuli_script_LinuxUtil_getX11Window__J
+  (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus
 }

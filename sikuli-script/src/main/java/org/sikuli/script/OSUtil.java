@@ -24,8 +24,9 @@ public interface OSUtil {
    //internal use
    public int closeApp(int pid);
 
-   public Region getWindow(String appName);
-   public Region getWindow(String appName, int winNum);
+   public Window getWindowById(long id);
+   public Window getWindow(String appName);
+   public Window getWindow(String appName, int winNum);
    Region getWindow(int pid);
    Region getWindow(int pid, int winNum);
 

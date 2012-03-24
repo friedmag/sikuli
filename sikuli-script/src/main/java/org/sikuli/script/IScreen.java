@@ -12,6 +12,7 @@ public interface IScreen {
    public Rectangle getBounds();
 
    public Region newRegion(Rectangle rect);
+   public Window waitWindow(String name, double timeout) throws FindFailed;
 
    public ScreenImage capture();
    public ScreenImage capture(int x, int y, int w, int h);

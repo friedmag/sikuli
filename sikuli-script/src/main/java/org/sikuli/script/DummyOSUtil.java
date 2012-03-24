@@ -41,12 +41,17 @@ public class DummyOSUtil implements OSUtil {
    
    }
 
-   public Region getWindow(String appName){
+   public Window getWindow(String appName){
       Debug.error("Your OS doesn't support getWindow");
       return null;
    }
 
-   public Region getWindow(String appName, int winNum){
+   public Window getWindow(String appName, int winNum){
+      Debug.error("Your OS doesn't support getWindow");
+      return null;
+   }
+
+   public Window getWindowById(long id) {
       Debug.error("Your OS doesn't support getWindow");
       return null;
    }
