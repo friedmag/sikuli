@@ -6,11 +6,22 @@
 package org.sikuli.script;
 
 import java.io.*;
-import java.awt.Window;
 import javax.swing.JWindow;
+import com.wapmx.nativeutils.jniloader.NativeLoader;
 //import com.sun.awt.AWTUtilities;
 
 public class LinuxUtil implements OSUtil {
+
+  static {
+    try{
+      NativeLoader.loadLibrary("LinuxUtil");
+      Debug.info("Linux utilities loaded.");
+      init();
+    }
+    catch(IOException e){
+      e.printStackTrace();
+    }
+  }
 
   public int switchApp(String appName, int winNum){
     try{
@@ -71,20 +82,8 @@ public class LinuxUtil implements OSUtil {
       WINDOW_ID,
       PID
   };
-  public Region getFocusedWindow(){
-    String cmd[] = {"xdotool", "getactivewindow"};
-    try {
-      Process p = Runtime.getRuntime().exec(cmd);
-      InputStream in = p.getInputStream();
-      BufferedReader bufin = new BufferedReader(new InputStreamReader(in));
-      String str = bufin.readLine();
-      long id=Integer.parseInt(str);
-      String hexid=String.format("0x%08x",id);
-      return findRegion(hexid,0,SearchType.WINDOW_ID);
-    } catch(IOException e) {
-      System.err.println("xdotool Error:"+e.toString());
-      return null;
-    }
+  public Window getFocusedWindow(){
+    return getX11FocusedWindow();
   }
   public Region getWindow(String appName){
     return getWindow(appName, 0);
@@ -220,16 +219,17 @@ public class LinuxUtil implements OSUtil {
     }
   }
 
-  public void setWindowOpacity(Window win, float alpha){
+  public void setWindowOpacity(java.awt.Window win, float alpha){
     //AWTUtilities.setWindowOpacity(win, alpha);
   }
 
-  public void setWindowOpaque(Window win, boolean opaque){
+  public void setWindowOpaque(java.awt.Window win, boolean opaque){
     //AWTUtilities.setWindowOpaque(win, opaque);
   }
 
 
-  public void bringWindowToFront(Window win, boolean ignoreMouse){}
+  public void bringWindowToFront(java.awt.Window win, boolean ignoreMouse){}
+
+  private static native Window getX11FocusedWindow();
+  private static native void init();
 } 
-
-

@@ -6,7 +6,6 @@
 package org.sikuli.script;
 
 import java.io.*;
-import java.awt.Window;
 
 public class DummyOSUtil implements OSUtil {
 
@@ -63,15 +62,15 @@ public class DummyOSUtil implements OSUtil {
    }
 
 
-   public Region getFocusedWindow(){
+   public Window getFocusedWindow(){
       Debug.error("Your OS doesn't support getFocusedWindow");
       return null;
    }
-   public void setWindowOpacity(Window win, float alpha){
+   public void setWindowOpacity(java.awt.Window win, float alpha){
    }
-   public void setWindowOpaque(Window win, boolean opaque){
+   public void setWindowOpaque(java.awt.Window win, boolean opaque){
    }
-   public void bringWindowToFront(Window win, boolean ignoreMouse){}
+   public void bringWindowToFront(java.awt.Window win, boolean ignoreMouse){}
 } 
 
 

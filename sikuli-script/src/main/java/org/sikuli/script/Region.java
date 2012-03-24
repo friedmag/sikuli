@@ -135,9 +135,10 @@ public class Region {
    /////////////////////////////////////////////////////////////////
    
    public String toString(){
-      return String.format("Region[%d,%d %dx%d]@%s E:%s, T:%.1f", 
-                            x, y, w, h, _scr.toString(),
-                            _throwException?"Y":"N", _autoWaitTimeout);
+      return String.format("%s[%d,%d %dx%d]@%s E:%s, T:%.1f", 
+          getClass().getName(),
+          x, y, w, h, _scr.toString(),
+          _throwException?"Y":"N", _autoWaitTimeout);
    }
 
 
@@ -1278,7 +1279,6 @@ public class Region {
       }
 
    }
-   
 
 }
 

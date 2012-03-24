@@ -96,6 +96,16 @@ IF(WIN32)
    TARGET_LINK_LIBRARIES(Win32Util ${JAVA_AWT_LIBRARY})
 ENDIF()
 
+IF(LINUX)
+  LIST(APPEND BUILD_TARGETS LinuxUtil)
+
+  ADD_LIBRARY(LinuxUtil SHARED
+    LinuxUtil.cc
+    org_sikuli_script_LinuxUtil.h
+    )
+  TARGET_LINK_LIBRARIES(LinuxUtil ${JAVA_AWT_LIBRARY})
+ENDIF()
+
 
 IF(APPLE)
    LIST(APPEND BUILD_TARGETS MacUtil)

@@ -5,8 +5,6 @@
  */
 package org.sikuli.script;
 
-import java.awt.Window;
-
 public interface OSUtil {
    // Windows: returns PID, 0 if fails
    // Others: return 0 if succeeds, -1 if fails
@@ -31,10 +29,10 @@ public interface OSUtil {
    Region getWindow(int pid);
    Region getWindow(int pid, int winNum);
 
-   public Region getFocusedWindow();
+   public Window getFocusedWindow();
 
-   public void setWindowOpacity(Window win, float alpha);
-   public void setWindowOpaque(Window win, boolean opaque);
-   public void bringWindowToFront(Window win, boolean ignoreMouse);
+   public void setWindowOpacity(java.awt.Window win, float alpha);
+   public void setWindowOpaque(java.awt.Window win, boolean opaque);
+   public void bringWindowToFront(java.awt.Window win, boolean ignoreMouse);
 }
 
